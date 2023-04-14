@@ -41,6 +41,7 @@ void loop(){
       tone(8, 800);
       delay(map(a, 0, 50, 0, 300));
       noTone(8);
+      delay(map(a, 0, 50, 0, 300));
     }
   }
   for(int i = 0; i < firewall; i++){

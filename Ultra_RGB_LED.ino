@@ -76,7 +76,6 @@ void setup(){
 	pinMode(redpin, OUTPUT);
 	pinMode(greenpin, OUTPUT);
 	pinMode(bluepin, OUTPUT);
-	pinMode(5, INPUT);
 	pinMode(echo, INPUT);
 	pinMode(trig, OUTPUT);
 }

@@ -41,6 +41,7 @@ void loop(){
       digitalWrite(5, HIGH);
       delay(map(a, 0, 50, 0, 300));
       digitalWrite(5, LOW);
+      delay(map(a, 0, 50, 0, 300));
     }
   }
   for(int i = 0; i < firewall; i++){

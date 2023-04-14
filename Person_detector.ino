@@ -42,7 +42,6 @@ void setup(){
 
 void loop(){
   int a = ultra();
-  ticks++;
   if(abs(aver(firewall, lasts)-a) < 20){
     if(a < thresh-20){
       gonethrough = 1;

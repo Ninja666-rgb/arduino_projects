@@ -49,7 +49,6 @@ void colour_pick(int i, int p){
 void setup(){
   Serial.begin(115200);
   delay(500);
-  pinMode(5, OUTPUT);
   pinMode(redpin, OUTPUT);
   pinMode(greenpin, OUTPUT);
   pinMode(bluepin, OUTPUT);

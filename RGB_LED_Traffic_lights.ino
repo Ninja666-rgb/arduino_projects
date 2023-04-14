@@ -6,7 +6,7 @@ void setup(){
 	pinMode(redpin, OUTPUT);
 	pinMode(greenpin, OUTPUT);
 	pinMode(bluepin, OUTPUT);
-  pinMode(5, INPUT);
+	pinMode(5, INPUT);
 }
 
 void RGB(int r, int g, int b){

@@ -7,8 +7,6 @@
 #define yellow 10
 #define firewall 6
 
-int thresh;
-
 int ultra(){
   digitalWrite(trigpin, LOW);
   delayMicroseconds(2);
@@ -63,31 +61,4 @@ void loop() {
     lasts[i] = lasts[i+1];
   }
   lasts[firewall-1] = a;
-  switch(traffic){
-    case 1:
-      if(lighttime > millis()){
-        digitalWrite(red, LOW);
-        digitalWrite(yellow, LOW);
-        digitalWrite(green, HIGH);
-      }else{
-        traffic = 2;
-        lighttime = millis()+3000;
-      }
-      break;
-    case 2:
-      if(lighttime > millis()){
-        digitalWrite(red, LOW);
-        digitalWrite(yellow, HIGH);
-        digitalWrite(green, LOW);
-      }else{
-        traffic = 3;
-        lighttime = millis()+10000;
-      }
-      break;
-    case 3:
-      digitalWrite(green, LOW);
-      digitalWrite(yellow, LOW);
-      digitalWrite(red, HIGH);
-      break;
-  }
 }

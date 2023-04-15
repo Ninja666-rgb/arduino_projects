@@ -41,10 +41,10 @@ void loop(){
   if(abs(aver(firewall, lasts)-a) < 20){
     level = map(a, 0, 100, 2, 11);
   }
-  for(int i = 2; i < level-1; i++){
+  for(int i = 2; i < level+1; i++){
     digitalWrite(i, HIGH);
   }
-  for(int i = level-1; i < 12; i++){
+  for(int i = level+1; i < 12; i++){
     digitalWrite(i, LOW);
   }
   for(int i = 0; i < firewall; i++){

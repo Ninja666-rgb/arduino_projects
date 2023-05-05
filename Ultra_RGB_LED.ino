@@ -78,6 +78,7 @@ void setup(){
 	pinMode(bluepin, OUTPUT);
 	pinMode(echopin, INPUT);
 	pinMode(trigpin, OUTPUT);
+	Serial.begin(115200);
 }
 
 void loop(){

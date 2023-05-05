@@ -23,7 +23,7 @@ void loop(){
   if(tempC < lowest){
     lowest = tempC;
   }
-  int level = map(tempC, lowest, highest, 2, 13);
+  int level = map(tempC*1000, lowest*1000, highest*1000, 2000, 13000)/1000;
   for(int i = 2; i < level+1; i++){
     digitalWrite(i, HIGH);
   }

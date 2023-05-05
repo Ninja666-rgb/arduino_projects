@@ -1,0 +1,30 @@
+Temperature sensor: A0
+
+Buzzer: 8
+
+Light sensor: A0
+
+Button: 5
+
+LED: 5
+
+12 Blue LEDS{
+  2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
+}
+
+3 LEDS{
+Green: 7
+Red: 9
+Yellow: 10
+}
+
+RGB LED{
+Green: 9
+Blue: 10
+Red: 11
+}
+
+Ultrasonic sensor{
+Echo: 11
+Trig: 12
+}

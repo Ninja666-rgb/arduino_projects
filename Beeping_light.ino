@@ -14,10 +14,10 @@ void loop(){
   if(a < lowest){
     lowest = a;
   }
-  if(a > lowest+(highest-lowest)/2){
+  if(a > lowest+(highest-lowest)/3){
     tone(8, 800);
-    delay(map(a, lowest+(highest-lowest)/2, highest, 500, 0));
+    delay(map(a, lowest+(highest-lowest)/3, highest, 500, 0));
     noTone(8);
-    delay(map(a, lowest+(highest-lowest)/2, highest, 500, 0));
+    delay(map(a, lowest+(highest-lowest)/3, highest, 500, 0));
   }
 }

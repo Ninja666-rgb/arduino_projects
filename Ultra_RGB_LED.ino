@@ -3,9 +3,11 @@
 #define redpin 11
 
 #define firewall 6
-#define trigpin  12  // Arduino pin tied to trigger pin on the ultrasonic sensor.
-#define echopin     11  // Arduino pin tied to echo pin on the ultrasonic sensor.
+#define trigpin  13  // Arduino pin tied to trigger pin on the ultrasonic sensor.
+#define echopin     12  // Arduino pin tied to echo pin on the ultrasonic sensor.
 #define maxdistance 200 // Maximum distance we want to ping for (in centimeters). Maximum sensor distance is rated at 400-500cm.
+
+int lasts[firewall];
 
 int ultra(){
   digitalWrite(trigpin, LOW);
@@ -19,13 +21,19 @@ int ultra(){
   return (int)((double)(dist)*0.01715);
 }
 
-int aver(int n, int num[100]){
-  int s;
-  for(int i = 0; i < n; i++){
-    s += num[i];
+int aver(){
+  int s = 0;
+  for(int i = 0; i < firewall; i++){
+    s += lasts[i];
   }
-  s = s/n;
+  s = s/firewall;
   return s;
+}
+
+void RGB(int r, int g, int b){
+	analogWrite(redpin, r);
+	analogWrite(greenpin, g);
+	analogWrite(bluepin, b);
 }
 
 void colour_pick(int i, int p){
@@ -64,14 +72,6 @@ void colour_pick(int i, int p){
   RGB(r*p, g*p, b*p);
 }
 
-int lasts[firewall];
-
-void RGB(int r, int g, int b){
-	analogWrite(redpin, r);
-	analogWrite(greenpin, g);
-	analogWrite(bluepin, b);
-}
-
 void setup(){
 	pinMode(redpin, OUTPUT);
 	pinMode(greenpin, OUTPUT);
@@ -82,8 +82,10 @@ void setup(){
 
 void loop(){
   int a = ultra();
-  if(abs(aver(firewall, lasts)-a) < 20){
-    colour_pick(a/200*120, 255);
+  if(abs(aver()-a) < 20 && a != 0){
+    colour_pick(map(a, 1, 20, 0, 120), 255);
+  }else{
+    RGB(0, 0, 0);
   }
   for(int i = 0; i < firewall; i++){
     lasts[i] = lasts[i+1];

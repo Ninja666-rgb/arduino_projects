@@ -3,6 +3,8 @@
 #define echopin     12  // Arduino pin tied to echo pin on the ultrasonic sensor.
 #define maxdistance 100 // Maximum distance we want to ping for (in centimeters). Maximum sensor distance is rated at 400-500cm.
 
+int lasts[firewall];
+
 int ultra(){
   digitalWrite(trigpin, LOW);
   delayMicroseconds(2);
@@ -15,31 +17,30 @@ int ultra(){
   return (int)((double)(dist)*0.01715);
 }
 
-int aver(int n, int num[100]){
-  int s;
-  for(int i = 0; i < n; i++){
-    s += num[i];
+int aver(){
+  int s = 0;
+  for(int i = 0; i < firewall; i++){
+    s += lasts[i];
   }
-  s = s/n;
+  s = s/firewall;
   return s;
 }
 
-int lasts[firewall];
-
 void setup(){
-	pinMode(echo, INPUT);
-	pinMode(trig, OUTPUT);
+	pinMode(echopin, INPUT);
+	pinMode(trigpin, OUTPUT);
   for(int i = 2; i < 12; i++){
     pinMode(i, OUTPUT);
   }
+  Serial.begin(115200);
 }
 
 int level;
 
 void loop(){
   int a = ultra();
-  if(abs(aver(firewall, lasts)-a) < 20){
-    level = map(a, 0, 100, 2, 11);
+  if(abs(aver()-a) < 20){
+    level = map(a, 0, 20, 2, 11);
   }
   for(int i = 2; i < level+1; i++){
     digitalWrite(i, HIGH);

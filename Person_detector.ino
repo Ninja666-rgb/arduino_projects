@@ -7,7 +7,6 @@ int lasts[firewall];
 int thresh;
 int gonethrough;
 unsigned long wentthrough;
-unsigned long times[10];
 
 int ultra(){
   digitalWrite(trig, LOW);
@@ -21,17 +20,17 @@ int ultra(){
   return (int)((double)(dist)*0.01715);
 }
 
-int aver(int n, int num[100]){
-  int s;
-  for(int i = 0; i < n; i++){
-    s += num[i];
+int aver(){
+  int s = 0;
+  for(int i = 0; i < firewall; i++){
+    s += lasts[i];
   }
-  s = s/n;
+  s = s/firewall;
   return s;
 }
 
 void setup(){
-  Serial.begin(15200);
+  Serial.begin(115200);
   pinMode(echo, INPUT);
   pinMode(trig, OUTPUT);
   for(int i = 0; i < 100; i++){
@@ -42,7 +41,7 @@ void setup(){
 
 void loop(){
   int a = ultra();
-  if(abs(aver(firewall, lasts)-a) < 20){
+  if(abs(aver()-a) < 20){
     if(a < thresh-20){
       gonethrough = 1;
     }else{
@@ -60,4 +59,3 @@ void loop(){
   }
   lasts[firewall-1] = a;
 }
-

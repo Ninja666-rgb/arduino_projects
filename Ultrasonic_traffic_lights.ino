@@ -7,6 +7,8 @@
 #define yellow 10
 #define firewall 6
 
+int lasts[firewall];
+
 int ultra(){
   digitalWrite(trigpin, LOW);
   delayMicroseconds(2);
@@ -25,33 +27,31 @@ void setup() {
   pinMode(yellow, OUTPUT);
   pinMode(trigpin, OUTPUT);
   pinMode(echopin, INPUT);
-  Serial.begin(115200); // Open serial monitor at 9600 baud to see ping results.
+  Serial.begin(115200);
   delay(500);
 }
 
-int aver(int n, int num[100]){
-  int s;
-  for(int i = 0; i < n; i++){
-    s += num[i];
+int aver(){
+  int s = 0;
+  for(int i = 0; i < firewall; i++){
+    s += lasts[i];
   }
-  s = s/n;
+  s = s/firewall;
   return s;
 }
 
-int lasts[firewall];
-
 void loop() {
   int a = ultra();
-  if(abs(aver(firewall, lasts)-a) < 20){
-    if(a < 5){
+  if(abs(aver()-a) < 20){
+    if(a < 10){
       digitalWrite(red, HIGH);
       digitalWrite(yellow, LOW);
       digitalWrite(green, LOW);
-    }else if(a < 10){
+    }else if(a > 9 && a < 20){
       digitalWrite(red, LOW);
       digitalWrite(yellow, HIGH);
       digitalWrite(green, LOW);
-    }else{
+    }else if(a > 19){
       digitalWrite(red, LOW);
       digitalWrite(yellow, LOW);
       digitalWrite(green, HIGH);

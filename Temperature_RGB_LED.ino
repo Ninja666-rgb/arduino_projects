@@ -69,5 +69,5 @@ void loop(){
   if(tempC < lowest){
     lowest = tempC;
   }
-  colour_pick(map(tempC, lowest, highest, 0, 240), 255);
+  colour_pick((float)map(tempC*1000, lowest*1000, highest*1000, 200000, 0)/1000, 255);
 }

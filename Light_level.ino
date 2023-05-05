@@ -1,5 +1,5 @@
 void setup(){
-  pinMode(2, INPUT);
+  pinMode(5, INPUT);
   for(int i = 3; i < 14; i++){
     pinMode(i, OUTPUT);
   }

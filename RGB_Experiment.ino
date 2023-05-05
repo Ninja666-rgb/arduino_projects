@@ -3,6 +3,7 @@
 #define redpin 11
 
 void setup(){
+  Serial.begin(115200);
 	pinMode(redpin, OUTPUT);
 	pinMode(greenpin, OUTPUT);
 	pinMode(bluepin, OUTPUT);
@@ -54,9 +55,8 @@ int i = 0;
 
 void loop(){
   colour_pick(i, 255);
-  delay(5);
+  delay(20);
   int a = analogRead(A0);
   Serial.println(a);
   i = (i+1)%360;
 }
-

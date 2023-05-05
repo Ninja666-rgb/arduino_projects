@@ -5,11 +5,17 @@ Buzzer: 8
 Light sensor: A0
 
 Button: 5
+Or
+Button: 2
 
 LED: 5
 
-12 Blue LEDS{
+Blue LEDS{
   2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
+  Or
+  3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
+  Or
+  2, 3, 4, 5, 6, 7, 8, 9, 10, 11
 }
 
 3 LEDS{
@@ -27,4 +33,7 @@ Red: 11
 Ultrasonic sensor{
 Echo: 11
 Trig: 12
+Or
+Echo: 12
+Trig: 13
 }

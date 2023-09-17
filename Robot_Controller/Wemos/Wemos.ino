@@ -78,7 +78,7 @@ const char *html = R"===(
 
 <h1>CodeDrag</h1>
 
-<p>Drag the blocks under the start block and create your code and then press run. <br>Ctrl+click or drag blocks into the grey area to <span style="color: #f00">delete them.</span> <br><span style="color: #f00">Note:</span> You can only move <b>one</b> block at a time and you can't join them together.</p>
+<p>Drag the blocks under the start block and create your code and then press run. <br>Ctrl+click or drag blocks into the grey area to <span style="color: #f00">delete them.</span> <br><span style="color: #f00">Note:</span> You can only move <b>one</b> block at a time and you can't join them together.<br><a href="/info">Sensor information</a></p>
 
 <div id="bin" class="creating">
   <div id="for" class="block" style="transform: translate(6px, 6px);">

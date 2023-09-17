@@ -38,7 +38,7 @@ int getUltraDistance(){
   long duration = pulseIn(echoPin, HIGH, 6000);
   int distance = (duration*0.01715);
   if(distance == 0){
-    distance = 100;
+    distance = 10000;
   }
   if(abs(aver()-distance) < 20){
     for(int i = 0; i < firewall; i++){

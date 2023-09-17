@@ -17,10 +17,12 @@ const char *ssid = "CodeDrag";
 const char chan = 3;
 
 int run = 0;
+int ultra;
 
 const char *html = R"===(
 <!DOCTYPE html>
 <html>
+<head>
 <style>
 .block {
   position: absolute;
@@ -57,7 +59,7 @@ const char *html = R"===(
 }
 
 .creating{
-  height: 10.5em;
+  height: 13em;
   background-color: #f1f1f1;
   border: 1px solid #d3d3d3;
 }
@@ -71,6 +73,7 @@ const char *html = R"===(
   padding: 2px;
 }
 </style>
+</head>
 <body style="min-height: 100vh;">
 
 <h1>CodeDrag</h1>
@@ -90,10 +93,13 @@ const char *html = R"===(
   <div id="lef" class="block" style="transform: translate(6px, 126px);">
     <div class="blockcontent" style="background-color: #3783FF;">Turn left at <input class="input" placeholder="1-10(Integers)" onkeydown="return verify(event);"> speed for <input class="input" placeholder="0-10(Decimals)" onkeydown="return verify2(event);"> seconds.</div>
   </div>
-  <div id="start" class="block" style="transform: translate(6px, 186px);">
+  <div id="forun" class="block" style="transform: translate(6px, 166px);">
+    <div class="blockcontent" style="background-color: #B026FF;">Go forwards at <input class="input" placeholder="1-10(Integers)" onkeydown="return verify(event);"> speed until distance to wall is less than <input class="input" placeholder="0-100(Decimals)" onkeydown="return verify3(event);"> cm away.</div>
+  </div>
+  <div id="start" class="block" style="transform: translate(6px, 228px);">
     <div class="start">Start</div>
   </div>
-  <div id="run" class="block" style="transform: translate(106px, 188px);" onclick="compile()">
+  <div id="run" class="block" style="transform: translate(106px, 228px);" onclick="compile()">
     <div class="run">Run!</div>
   </div>
 </div>
@@ -109,6 +115,7 @@ creator(document.getElementById("for"));
 creator(document.getElementById("bac"));
 creator(document.getElementById("rig"));
 creator(document.getElementById("lef"));
+creator(document.getElementById("forun"));
 
 window.onscroll = function(ev) {
   if ((window.innerHeight + Math.round(window.scrollY)) >= document.body.offsetHeight) {
@@ -131,7 +138,7 @@ function compile(){
       wrong = 1;
     }
     let type = document.getElementsByClassName("block "+i)[0].children[0].innerText;
-    if(type.includes("forw")){
+    if( type.includes("forw") &&  !(type.includes("until"))){
       comp = comp+"f"+fir+"U"+sec+"U";
     }else if(type.includes("back")){
       comp = comp+"b"+fir+"U"+sec+"U";
@@ -139,6 +146,8 @@ function compile(){
       comp = comp+"l"+fir+"U"+sec+"U";
     }else if(type.includes("right")){
       comp = comp+"r"+fir+"U"+sec+"U";
+    }else if(type.includes("until")){
+      comp = comp+"F"+fir+"U"+sec+"U";
     }
     console.log(comp);
   }
@@ -159,15 +168,8 @@ function compile(){
             var params = 'message='+comp;
             http.open('POST', url, true);
             http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-            http.onreadystatechange = function() {//Call a function when the state changes.
-              if(http.readyState != 4 || http.status != 200) {
-                alert("Could not run");
-              }
-            }
             http.send(params);
           }
-        }else{
-          alert("Could not run");
         }
       }
     };
@@ -176,7 +178,7 @@ function compile(){
 }
 
 function creator(ate){
-	create();
+create();
   create();
   function create(){
     if(document.getElementsByClassName(("block onpile "+ate.id)).length < 3){
@@ -204,10 +206,23 @@ function verify(evt) {
   }
 }
 
-function verify2(evt, mi, ma) {
+function verify2(evt) {
   var charCode = evt.key;
   if(Number(charCode) > -1 && Number(charCode) < 10 || charCode == "Delete" || charCode == "Backspace" || charCode == "." || charCode == "ArrowUp" || charCode == "ArrowDown" || charCode == "ArrowLeft" || charCode == "ArrowRight"){
     if(Number(evt.target.value+evt.key) > 10 || Number(evt.target.value+evt.key) < 0){
+      return false;
+    }
+    evt.target.style.border = "3px solid #d3d3d3";
+    return true;
+  }else{
+    return false;
+  }
+}
+
+function verify3(evt) {
+  var charCode = evt.key;
+  if(Number(charCode) > -1 && Number(charCode) < 10 || charCode == "Delete" || charCode == "Backspace" || charCode == "." || charCode == "ArrowUp" || charCode == "ArrowDown" || charCode == "ArrowLeft" || charCode == "ArrowRight"){
+    if(Number(evt.target.value+evt.key) > 100 || Number(evt.target.value+evt.key) < 0){
       return false;
     }
     evt.target.style.border = "3px solid #d3d3d3";
@@ -352,6 +367,33 @@ function dragElement(elmnt) {
 </html>
 )===";
 
+const char *html2 = R"===(
+<!DOCTYPE html>
+<html>
+<body style="min-height: 100vh;">
+
+<h1>Sensors</h1>
+
+<p>Ultrasonic sensor: <span id="read"></span>cm</p>
+<script>
+setInterval(function(){
+  var xmlHttp = new XMLHttpRequest();
+  var ur = window.location.origin+"/ultra";
+  xmlHttp.open("GET", ur, true);
+  xmlHttp.onload = (e) => {
+    if (xmlHttp.readyState === 4) {
+      if (xmlHttp.status === 200) {
+        document.getElementById("read").innerText = xmlHttp.responseText;
+      }
+    }
+  };
+  xmlHttp.send(null);
+}, 100);
+</script>
+</body>
+</html>
+)===";
+
 void defaultPage() {
   webServer.send(200, "text/html", html);
 }
@@ -372,6 +414,14 @@ void running(){
   }
 }
 
+void ultread(){
+  webServer.send(200, "text/plain", String(ultra));
+}
+
+void info(){
+  webServer.send(200, "text/html", html2);
+}
+
 void setup() {
   Serial.begin(115200);
   pinMode(rxPin, INPUT);
@@ -385,6 +435,8 @@ void setup() {
   dnsServer.start(DNS_PORT, "*", apIP);
   webServer.on("/api", api);
   webServer.on("/run", running);
+  webServer.on("/ultra", ultread);
+  webServer.on("/info", info);
   webServer.onNotFound(defaultPage);
   webServer.begin();
 }
@@ -395,8 +447,11 @@ void loop() {
     data.remove(data.length()-1);
     if(data.equals("Idle")){
       run = 0;
-    }else{
+    }else if (data.equals("Running")){
       run = 1;
+    }else if (data.indexOf("INFO") > -1){
+      data.remove(0, 4);
+      ultra = atoi(data.c_str());
     }
   }
   if (WiFi.softAPgetStationNum() != 0){
